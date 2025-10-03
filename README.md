@@ -23,7 +23,7 @@ sudo usermod -aG docker $USER  # ⚠️ Cierra sesión y vuelve a iniciar para a
 ```bash
 go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
 ls $HOME/go/bin/sqlc
-echo 'export PATH=$PATH:/home/lucas/go/bin' >> ~/.bashrc
+echo 'export PATH=$PATH:$HOME/go/bin' >> ~/.bashrc
 source ~/.bashrc
 ```
 
