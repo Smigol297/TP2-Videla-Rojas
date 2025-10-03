@@ -55,16 +55,10 @@ go mod tidy
 sqlc generate
 ```
 
-5. Compilar la aplicación
+5. Ejecutar tests
 
 ```bash
-go build
-```
-
-6. Ejecutar la aplicación
-
-```bash
-./tp2
+go test -v
 ```
 
 ## 🛑 Detener contenedores
