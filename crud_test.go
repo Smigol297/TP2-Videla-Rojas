@@ -43,6 +43,11 @@ func cleanupTestDB(t *testing.T, db *sql.DB) {
 	if _, err := db.Exec(`DELETE FROM Usuario`); err != nil {
 		t.Fatalf("Error al limpiar Usuario: %v", err)
 	}
+
+	// Luego borrar Tema
+	if _, err := db.Exec(`DELETE FROM Tema`); err != nil {
+		t.Fatalf("Error al limpiar Tema: %v", err)
+	}
 }
 
 func TestUsuarioRepository_CRUD(t *testing.T) {
@@ -385,7 +390,7 @@ func TestTarjetaRepository_CRUD(t *testing.T) {
 	})
 }
 
-/*func TestTemaRepository_CRUD(t *testing.T) {
+func TestTemaRepository_CRUD(t *testing.T) {
 
 	db := setupTestDB(t)       // Configurar la base de datos de prueba
 	defer db.Close()           // ← Garantiza que la conexión se CERRARÁ al final
@@ -399,9 +404,7 @@ func TestTarjetaRepository_CRUD(t *testing.T) {
 		cleanupTestDB(t, db) // ← LIMPIAR AL INICIO de cada subtest
 
 		// Crear tema usando la MISMA función que en main.go
-		createdTema, err := queries.CreateTema(ctx, sqlc.CreateTemaParams{
-			NombreTema: "PRUEBA 1",
-		})
+		createdTema, err := queries.CreateTema(ctx, "PRUEBA 1")
 
 		if err != nil {
 			t.Fatalf("CreateTema failed: %v", err)
@@ -420,11 +423,7 @@ func TestTarjetaRepository_CRUD(t *testing.T) {
 		cleanupTestDB(t, db) // ← LIMPIAR AL INICIO de cada subtest
 
 		// Primero crear un tema
-		createdTema, err := queries.CreateTema(ctx, sqlc.CreateTemaParams{
-			NombreTema: "PRUEBA 2",
-			Email:      "test2@example.com",
-			Contrasena: "securepassword",
-		})
+		createdTema, err := queries.CreateTema(ctx, "PRUEBA 2")
 		if err != nil {
 			t.Fatalf("Setup failed: %v", err)
 		}
@@ -444,10 +443,7 @@ func TestTarjetaRepository_CRUD(t *testing.T) {
 		cleanupTestDB(t, db) // ← LIMPIAR AL INICIO de cada subtest
 
 		// Crea un tema de prueba en la base de datos
-		createdTema, err := queries.CreateTema(ctx, sqlc.CreateTemaParams{
-			NombreTema: "PRUEBA 3",
-			NombreTema: "PRUEBA 3",
-		})
+		createdTema, err := queries.CreateTema(ctx, "PRUEBA 3")
 		// Si falla la creación, termina el subtest con error
 		if err != nil {
 			t.Fatalf("UpdateTema failed: %v", err)
@@ -478,10 +474,7 @@ func TestTarjetaRepository_CRUD(t *testing.T) {
 		cleanupTestDB(t, db) // ← LIMPIAR AL INICIO de cada subtest
 
 		// Primero crear un tema
-		createdTema, err := queries.CreateTema(ctx, sqlc.CreateTemaParams{
-			NombreTema: "PRUEBA 4",
-			Email:      "test4ejemplo.com",
-		})
+		createdTema, err := queries.CreateTema(ctx, "PRUEBA 4")
 		if err != nil {
 			t.Fatalf("Setup failed: %v", err)
 		}
@@ -503,15 +496,13 @@ func TestTarjetaRepository_CRUD(t *testing.T) {
 		cleanupTestDB(t, db) // ← LIMPIAR AL INICIO de cada subtest
 
 		// Crear varios temas de prueba
-		TemasToCreate := []sqlc.CreateTemaParams{
-			{NombreTema: "Tema A", Email: "a"},
-			{NombreTema: "Tema B", Email: "b"},
-			{NombreTema: "Tema C", Email: "c"},
+		TemasToCreate := []string{
+			"Tema A", "Tema B", "Tema C",
 		}
 
 		// Inserta los temas en la base de datos
-		for _, t := range TemasToCreate {
-			_, err := queries.CreateTema(ctx, t)
+		for _, tema := range TemasToCreate {
+			_, err := queries.CreateTema(ctx, tema)
 			if err != nil {
 				t.Fatalf("Setup failed: %v", err)
 			}
@@ -530,13 +521,13 @@ func TestTarjetaRepository_CRUD(t *testing.T) {
 		}
 
 		// Verifica que los nombres y emails creados estén en la lista recuperada
-		for i, t := range TemasToCreate {
-			if Temas[i].NombreTema != t.NombreTema {
+		for i, tema := range TemasToCreate {
+			if Temas[i].NombreTema != tema {
 				t.Errorf("Expected Tema %d to be %+v, got %+v", i, t, Temas[i])
 			}
 		}
 	})
-}*/
+}
 
 /*# Ejecutar todos los subtests
 go test -v
